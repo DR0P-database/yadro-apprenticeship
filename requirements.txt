@@ -2,3 +2,5 @@ fastapi
 sqlalchemy
 pydantic-settings
 asyncpg
+uvicorn
+alembic
