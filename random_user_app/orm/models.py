@@ -1,65 +1,111 @@
 import datetime
-from sqlalchemy.orm import DeclarativeBase
-
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import Optional
+from sqlalchemy import UUID as SA_UUID, DateTime, ForeignKey
+from uuid import UUID
+from sqlalchemy.orm import relationship, Mapped, mapped_column, DeclarativeBase
 
 class Base(DeclarativeBase):
     """Base database model."""
     __abstract__ = True
     pass
 
+class Street(Base):
+    __tablename__ = "streets"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    number: Mapped[int]
+    name: Mapped[str]
+
+class Coordinates(Base):
+    __tablename__ = "coordinates"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    latitude: Mapped[str]
+    longitude: Mapped[str]
+
+class Timezone(Base):
+    __tablename__ = "timezones"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    offset: Mapped[str]
+    description: Mapped[str]
 
 class Location(Base):
-    __tablename__ = "location"
-
+    __tablename__ = "locations"
     id: Mapped[int] = mapped_column(primary_key=True)
-    street_number: Mapped[int]
-    street_name: Mapped[str]
     city: Mapped[str]
     state: Mapped[str]
     country: Mapped[str]
     postcode: Mapped[str]
 
-    latitude: Mapped[str]
-    longitude: Mapped[str]
+    street_id: Mapped[int] = mapped_column(ForeignKey("streets.id", ondelete="CASCADE"))
+    coordinates_id: Mapped[int] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"))
+    timezone_id: Mapped[int] = mapped_column(ForeignKey("timezones.id", ondelete="CASCADE"))
 
-    timezone_offset: Mapped[str]
-    timezone_description: Mapped[str]
+    street: Mapped["Street"] = relationship()
+    coordinates: Mapped["Coordinates"] = relationship()
+    timezone: Mapped["Timezone"] = relationship()
 
-
-class User(Base):
-    __tablename__ = "user"
-
+class Name(Base):
+    __tablename__ = "names"
     id: Mapped[int] = mapped_column(primary_key=True)
-    gender:  Mapped[str]
+    title: Mapped[str]
+    first: Mapped[str]
+    last: Mapped[str]
+
+class Login(Base):
+    __tablename__ = "logins"
+    uuid: Mapped[UUID] = mapped_column(SA_UUID, primary_key=True)
+    username: Mapped[str]
+    password: Mapped[str]
+    salt: Mapped[str]
+    md5: Mapped[str]
+    sha1: Mapped[str]
+    sha256: Mapped[str]
+
+class DOB(Base):
+    __tablename__ = "dobs"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    age: Mapped[int]
+
+class Registered(Base):
+    __tablename__ = "registered"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
+    age: Mapped[int]
+
+class IDInfo(Base):
+    __tablename__ = "id_info"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    value: Mapped[Optional[str]] = mapped_column(nullable=True)
+    
+class Picture(Base):
+    __tablename__ = "pictures"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    large: Mapped[str]
+    medium: Mapped[str]
+    thumbnail: Mapped[str]
+
+class Users(Base):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    gender: Mapped[str]
     email: Mapped[str]
     phone: Mapped[str]
     cell: Mapped[str]
     nat: Mapped[str]
 
-    title: Mapped[str]
-    first_name: Mapped[str]
-    last_name: Mapped[str]
+    name_id: Mapped[int] = mapped_column(ForeignKey("names.id", ondelete="CASCADE"))
+    login_uuid: Mapped[UUID] = mapped_column(ForeignKey("logins.uuid", ondelete="CASCADE"))
+    dob_id: Mapped[int] = mapped_column(ForeignKey("dobs.id", ondelete="CASCADE"))
+    registered_id: Mapped[int] = mapped_column(ForeignKey("registered.id", ondelete="CASCADE"))
+    id_info_id: Mapped[int] = mapped_column(ForeignKey("id_info.id", ondelete="CASCADE"))
+    picture_id: Mapped[int] = mapped_column(ForeignKey("pictures.id", ondelete="CASCADE"))
+    location_id: Mapped[int] = mapped_column(ForeignKey("locations.id", ondelete="CASCADE"))
 
-    dob_date: Mapped[datetime.datetime]
-    dob_age: Mapped[int]
-
-    reg_date = Mapped[datetime.datetime]
-    reg_age: Mapped[int]
-
-    id_name: Mapped[str]
-    id_value: Mapped[str]
-
-    login_uuid: Mapped[str]
-    login_username: Mapped[str]
-    login_password: Mapped[str]
-    login_salt: Mapped[str]
-    login_md5: Mapped[str]
-    login_sha1: Mapped[str]
-    login_sha256: Mapped[str]
-
-    picture_large: Mapped[str]
-    picture_medium: Mapped[str]
-    picture_thumbnail: Mapped[str]
-
-    location_id: Mapped[int]
+    name: Mapped["Name"] = relationship()
+    login: Mapped["Login"] = relationship()
+    dob: Mapped["DOB"] = relationship()
+    registered: Mapped["Registered"] = relationship()
+    id_info: Mapped["IDInfo"] = relationship()
+    picture: Mapped["Picture"] = relationship()
+    location: Mapped["Location"] = relationship()
