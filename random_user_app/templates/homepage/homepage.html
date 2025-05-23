@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/homepage/homepage.css') }}">
+{% endblock %}
+
+{% block title %}{{ data.title }}{% endblock %}
+
+{% block content %}
+
+<div class="center-block">
+    <h1>{{ title }}</h1>   
+    <form method="post" action="/homepage/fetch">
+        <label for="count">Количество пользователей:</label>
+        <input type="number" name="count" id="count" min="1" value=1>
+        <input type="hidden" name="current_total" value="{{ data.total }}">
+        <button type="submit" class="btn">Получить</button>
+    </form>
+
+    <a href="/homepage/random" class="btn blue wide-btn">🎲 Открыть случайнго пользователя</a>
+</div>
+
+{% if data.users %}
+<div class="table-wrapper">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Пол</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Телефон</th>
+                <th>Email</th>
+                <th>Адрес проживания</th>
+                <th>Изображение</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in data.users %}
+            <tr>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.location }}</td>
+                <td><img src="{{ user.image }}" alt=""></td>
+                <td>
+                    <a href="/homepage/{{ user.id }}" class="btn">Открыть</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Пагинация -->
+<div class="pagination">
+    {% set prev_offset = data.offset - data.limit if data.offset - data.limit >= 0 else 0 %}
+    <a href="/homepage?limit={{ data.limit }}&offset={{ prev_offset }}" class="page-arrow{% if data.offset == 0 %} disabled{% endif %}">&laquo; Назад</a>
+    <span>Страница {{ (data.offset // data.limit) + 1 }} из {{ ((data.total - 1) // data.limit) + 1 }}</span>
+    {% set next_offset = data.offset + data.limit %}
+    <a href="/homepage?limit={{ data.limit }}&offset={{ next_offset }}" class="page-arrow{% if next_offset >= data.total %} disabled{% endif %}">Вперёд &raquo;</a>
+</div>
+{% else %}
+<p>Нет данных пользователей.</p>
+{% endif %}
+{% endblock %}

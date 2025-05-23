@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}User: {{ user.name.first }} {{ user.name.last }}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/userpage/userpage.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<a href="/" class="home-absolute-btn">🏠 Домой</a>
+
+<div class="container" style="max-width: 600px; margin: 0 auto;">
+    <div class="user-info">
+        <h1 style="margin: 0;">{{ user.name.title }} {{ user.name.first }} {{ user.name.last }}</h1>
+        <img src="{{ user.picture.large }}" alt="User photo" style="border-radius: 50%;">
+    </div>
+    <ul>
+        <li><b>Gender:</b> {{ user.gender }}</li>
+        <li><b>Email:</b> {{ user.email }}</li>
+        <li><b>Nationality:</b> {{ user.nat }}</li>
+        <li><b>Phone:</b> {{ user.phone }}</li>
+        <li><b>Cell:</b> {{ user.cell }}</li>
+        <li><b>Date of Birth:</b> {{ user.dob.date }} ({{ user.dob.age }} years old)</li>
+        <li><b>Registered:</b> {{ user.registered.date }} ({{ user.registered.age }} years ago)</li>
+        <li><b>ID:</b> {{ user.id_info.name }} {{ user.id_info.value }}</li>
+    </ul>
+    <h2>Location</h2>
+    <ul>
+        <li><b>Street:</b> {{ user.location.street.number }} {{ user.location.street.name }}</li>
+        <li><b>City:</b> {{ user.location.city }}</li>
+        <li><b>State:</b> {{ user.location.state }}</li>
+        <li><b>Country:</b> {{ user.location.country }}</li>
+        <li><b>Postcode:</b> {{ user.location.postcode }}</li>
+        <li><b>Coordinates:</b> {{ user.location.coordinates.latitude }}, {{ user.location.coordinates.longitude }}</li>
+        <li><b>Timezone:</b> {{ user.location.timezone.offset }} ({{ user.location.timezone.description }})</li>
+    </ul>
+    <h2>Login Info</h2>
+    <ul>
+        <li><b>Username:</b> {{ user.login.username }}</li>
+        <li><b>Password:</b> {{ user.login.password }}</li>
+        <li><b>UUID:</b> {{ user.login.uuid }}</li>
+        <li><b>MD5:</b> {{ user.login.md5 }}</li>
+        <li><b>SHA1:</b> {{ user.login.sha1 }}</li>
+        <li><b>SHA256:</b> {{ user.login.sha256 }}</li>
+    </ul>
+</div>
+{% endblock %}

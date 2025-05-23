@@ -1,0 +1,86 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+header, footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+main {
+    max-width: 1280px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    align-items: center;
+    margin-top: 0;
+}
+
+.center-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.center-block form {
+    display: flex;
+    flex-direction: row;         
+    align-items: center;         
+    justify-content: center;     
+    gap: 16px;                   
+    width: auto;
+    max-width: 600px;
+}
+.center-block h1 {
+    margin-bottom: 20px;
+}
+
+.btn {
+    /* padding: 10px 20px; */
+    /* margin-top: 10px; */
+    /* background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 8px; */
+    /* cursor: pointer; */
+    text-decoration: none;
+    /* display: inline-block;
+    width: auto; */
+}
+
+.btn:hover {
+    background-color: #333;
+}
+
+.btn.blue {
+    background-color: #007BFF;
+}
+
+.btn.blue:hover {
+    background-color: #0056b3;
+}
+
+.flash-msg {
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    transition: opacity 0.5s;
+}
+.flash-success {
+    background: #e0ffe0;
+    color: #207d2a;
+    border: 1px solid #4caf50;
+}
+.flash-error {
+    background: #ffe0e0;
+    color: #a80000;
+    border: 1px solid #e53935;
+}

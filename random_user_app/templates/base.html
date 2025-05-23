@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}RandomUserApp{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+    {% endblock %}
+</head>
+<body>    
+    
+    <main>
+        {% if msg %}
+        <div id="flash-msg"
+            class="flash-msg {% if msg.status == 'ok' %}flash-success{% else %}flash-error{% endif %}">
+            {{ msg.msg }}
+        </div>
+        <script>
+            setTimeout(function() {
+                let el = document.getElementById('flash-msg');
+                if (el) el.style.display = 'none';
+            }, 4000);
+        </script>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include "footer.html" %}
+</body>
+</html>

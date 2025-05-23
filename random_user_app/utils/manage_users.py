@@ -1,8 +1,9 @@
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 import httpx
-from random_user_app.schemas.models import UserInDB
+from random_user_app.schemas.models import GetAllUsers, UserInDB
 from random_user_app.settings import get_settings
+from sqlalchemy.orm import selectinload
 from random_user_app.orm.models import DOB, Coordinates, IDInfo, Login, Name, Picture, Registered, Street, Timezone
 from random_user_app.orm.models import Users, Location
 import logging
@@ -143,3 +144,52 @@ async def save_users_to_db(users: list[UserInDB], db: AsyncSession):
         saved_users += 1
     await db.commit()
     return saved_users, skipped_users
+
+
+async def get_users_from_db(session: AsyncSession, limit: int = 1, offset: int = 0):
+   # Получаем пользователей с пагинацией
+    result = await session.execute(
+        select(Users)
+        .options(
+            selectinload(Users.name),
+            selectinload(Users.location).selectinload(Location.street),
+            selectinload(Users.picture)
+        )
+        .offset(offset).limit(limit)
+    )
+    users = result.scalars().all()
+
+    count_users = await session.execute(func.count((Users.id)))
+    total_users = count_users.scalars().first()
+
+    if not users:
+        return GetAllUsers.model_validate({
+            "users": [],
+            "limit": limit,
+            "offset": offset,
+            "total": 0
+        })
+
+    result_data = []
+    
+    for user in users:
+        user_data = {
+           "id": user.id,
+           'gender': user.gender,
+            "first_name": user.name.first,
+            "last_name": user.name.last,
+            'phone': user.phone,
+            "email": user.email,
+            "location": f"{user.location.street.name}, {user.location.street.number}",
+            'image': user.picture.thumbnail,
+        }
+        result_data.append(user_data)
+
+    response = {
+        "users": result_data,
+        "limit": limit,
+        "offset": offset,
+        "total": total_users,
+    }
+    
+    return GetAllUsers.model_validate(response)
