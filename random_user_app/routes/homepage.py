@@ -14,8 +14,10 @@ from . import jinja_env, templates
 
 homepage = APIRouter(prefix='/homepage')
 
-@homepage.get("/", response_model=GetAllUsers)
+@homepage.get("/")
 async def get_users(request: Request, limit: int = 25, offset: int = 0, msg = "", session: AsyncSession = Depends(get_session)):
+    if limit < 1:
+        raise ValueError("Limit must be greater than 0")
     respones = await get_users_from_db(session=session, limit=limit, offset=offset)
     data = respones.model_dump()
 
@@ -80,8 +82,6 @@ async def get_user_by_id(user_id: Annotated[int, Path(ge=1)], request: Request, 
         .where(Users.id_pk == user_id)
     )
     user = result.scalars().first()
-
-    # print(user., '\n')
 
     if not user:
         return {"error": "User not found"}

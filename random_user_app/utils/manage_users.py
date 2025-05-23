@@ -153,6 +153,8 @@ async def save_user_to_db(user: UserInDB, db: AsyncSession):
 
 
 async def get_users_from_db(session: AsyncSession, limit: int = 1, offset: int = 0):
+    if offset < 0:
+        raise ValueError("Offset must be greater than or equal to 0")
    # Получаем пользователей с пагинацией
     result = await session.execute(
         select(Users)
