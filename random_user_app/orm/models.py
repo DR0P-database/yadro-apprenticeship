@@ -87,7 +87,7 @@ class Picture(Base):
 
 class Users(Base):
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id_pk: Mapped[int] = mapped_column(primary_key=True)
     gender: Mapped[str]
     email: Mapped[str]
     phone: Mapped[str]
@@ -106,6 +106,6 @@ class Users(Base):
     login: Mapped["Login"] = relationship()
     dob: Mapped["DOB"] = relationship()
     registered: Mapped["Registered"] = relationship()
-    id_info: Mapped["IDInfo"] = relationship()
+    id: Mapped["IDInfo"] = relationship()
     picture: Mapped["Picture"] = relationship()
     location: Mapped["Location"] = relationship()

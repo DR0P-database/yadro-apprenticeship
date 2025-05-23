@@ -85,6 +85,7 @@ class Picture(BaseModel):
 
 
 class UserInDB(BaseModel):
+    id_pk: int = None
     gender: str
     name: Name
     location: LocationInDB
@@ -100,25 +101,8 @@ class UserInDB(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class UserFromDB(BaseModel):
-    id: int
-    gender: str
-    name: Name
-    location: LocationInDB
-    email: str
-    login: Login
-    dob: DOB
-    registered: Registered
-    phone: str
-    cell: str
-    id_info: IDInfo
-    picture: Picture
-    nat: str
-
-    model_config = ConfigDict(from_attributes=True)
-
 class GetUser(BaseModel):
-    id: int
+    id_pk: int
     gender: str
     first_name: str
     last_name: str

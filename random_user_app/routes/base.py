@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
 
     
     async with Session() as session:  # 2. Получение данные и Сохраняем пользователей в БД
-        await get_new_users(count=100, session=session)
+        await get_new_users(count=10, session=session)
 
     yield
 
