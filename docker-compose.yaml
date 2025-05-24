@@ -1,0 +1,23 @@
+version: '3.8'
+name: random_user_app
+
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_DSN=postgresql+asyncpg://postgres:postgres@db:5432/postgres    
+
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
