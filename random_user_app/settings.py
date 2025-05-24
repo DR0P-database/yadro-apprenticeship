@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DB_DSN: str = "postgresql+asyncpg://postgres:postgres@localhost:5433/postgres"
+    DB_DSN: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/postgres"
     API_URL: str = "https://randomuser.me/api/"
     LIMIT_USERS_PER_PAGE: int = 100
 
