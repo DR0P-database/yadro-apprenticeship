@@ -3,7 +3,7 @@ sqlalchemy
 pydantic-settings
 httpx
 uvicorn
-alembic
 psycopg2-binary
 jinja2
 python-multipart
+asyncpg

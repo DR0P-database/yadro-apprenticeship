@@ -1,5 +1,5 @@
 run:
-	source ./.venv/bin/activate && uvicorn --reload --log-config logging_dev.conf rating_api.routes.base:app
+	source ./.venv/bin/activate && uvicorn --reload random_user_app.routes.base:app
 
 configure: venv
 	source ./.venv/bin/activate && pip install -r requirements.txt
@@ -17,6 +17,3 @@ format:
 	
 db:
 	docker run -d -p 5432:5432 -e POSTGRES_HOST_AUTH_METHOD=trust --name db-random-user postgres:15
-
-migrate:
-	alembic upgrade head
