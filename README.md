@@ -13,6 +13,7 @@
     git clone https://github.com/DR0P-database/yadro-apprenticeship.git
     cd yadro-apprenticeship
     ```
+   ```make configure``` из терминала уже сразу создаст окружение и установит зависимости, можно пропустить пункт 2 и 3
 2. **Создайте и активируйте виртуальное окружение:**
     ```sh
     python3 -m venv .venv
@@ -22,7 +23,6 @@
     ```sh
     pip install -r requirements.txt
     ```
-    Либо ```make configure``` из терминала уже сразу создаст окружение и установит зависимости
 4. **Запустите PostgreSQL (можно через Docker):**
     
     Выполнить команду ```make db```
