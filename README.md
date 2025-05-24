@@ -33,7 +33,7 @@
     ```
     Так же можно запустить вручную, но в .env или settings.py прописать credentials. 
     
-    Например: ```DB_DSN = postgresql+asyncpg://postgres:postgres@localhost:5433/postgres```
+    Например: ```DB_DSN = postgresql+asyncpg://postgres:postgres@localhost:5432/postgres```
 
 5. **Запустите приложение:**
     ```sh
