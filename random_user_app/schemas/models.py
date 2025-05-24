@@ -1,6 +1,8 @@
 import datetime
 from typing import Optional, Union
+
 from pydantic import BaseModel, ConfigDict
+
 
 class Name(BaseModel):
     title: str
@@ -44,6 +46,8 @@ class LocationInDB(BaseModel):
 
 
 import uuid
+
+
 class Login(BaseModel):
     uuid: uuid.UUID
     username: str
@@ -69,18 +73,19 @@ class Registered(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class IDInfo(BaseModel):
     name: str
     value: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
 
-    
+
 class Picture(BaseModel):
     large: str
     medium: str
-    thumbnail: str    
-    
+    thumbnail: str
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -101,6 +106,7 @@ class UserInDB(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 class GetUser(BaseModel):
     id_pk: int
     gender: str
@@ -110,6 +116,7 @@ class GetUser(BaseModel):
     email: str
     location: str
     image: str
+
 
 class GetAllUsers(BaseModel):
     users: list[GetUser]

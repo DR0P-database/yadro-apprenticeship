@@ -1,13 +1,17 @@
 import datetime
 from typing import Optional
-from sqlalchemy import UUID as SA_UUID, DateTime, ForeignKey
 from uuid import UUID
-from sqlalchemy.orm import relationship, Mapped, mapped_column, DeclarativeBase
+
+from sqlalchemy import UUID as SA_UUID
+from sqlalchemy import DateTime, ForeignKey
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
 
 class Base(DeclarativeBase):
     """Base database model."""
+
     __abstract__ = True
-    pass
+
 
 class Street(Base):
     __tablename__ = "streets"
@@ -15,17 +19,20 @@ class Street(Base):
     number: Mapped[int]
     name: Mapped[str]
 
+
 class Coordinates(Base):
     __tablename__ = "coordinates"
     id: Mapped[int] = mapped_column(primary_key=True)
     latitude: Mapped[str]
     longitude: Mapped[str]
 
+
 class Timezone(Base):
     __tablename__ = "timezones"
     id: Mapped[int] = mapped_column(primary_key=True)
     offset: Mapped[str]
     description: Mapped[str]
+
 
 class Location(Base):
     __tablename__ = "locations"
@@ -36,12 +43,17 @@ class Location(Base):
     postcode: Mapped[str]
 
     street_id: Mapped[int] = mapped_column(ForeignKey("streets.id", ondelete="CASCADE"))
-    coordinates_id: Mapped[int] = mapped_column(ForeignKey("coordinates.id", ondelete="CASCADE"))
-    timezone_id: Mapped[int] = mapped_column(ForeignKey("timezones.id", ondelete="CASCADE"))
+    coordinates_id: Mapped[int] = mapped_column(
+        ForeignKey("coordinates.id", ondelete="CASCADE")
+    )
+    timezone_id: Mapped[int] = mapped_column(
+        ForeignKey("timezones.id", ondelete="CASCADE")
+    )
 
     street: Mapped["Street"] = relationship()
     coordinates: Mapped["Coordinates"] = relationship()
     timezone: Mapped["Timezone"] = relationship()
+
 
 class Name(Base):
     __tablename__ = "names"
@@ -49,6 +61,7 @@ class Name(Base):
     title: Mapped[str]
     first: Mapped[str]
     last: Mapped[str]
+
 
 class Login(Base):
     __tablename__ = "logins"
@@ -60,11 +73,13 @@ class Login(Base):
     sha1: Mapped[str]
     sha256: Mapped[str]
 
+
 class DOB(Base):
     __tablename__ = "dobs"
     id: Mapped[int] = mapped_column(primary_key=True)
     date: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
     age: Mapped[int]
+
 
 class Registered(Base):
     __tablename__ = "registered"
@@ -72,18 +87,21 @@ class Registered(Base):
     date: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True))
     age: Mapped[int]
 
+
 class IDInfo(Base):
     __tablename__ = "id_info"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str]
     value: Mapped[Optional[str]] = mapped_column(nullable=True)
-    
+
+
 class Picture(Base):
     __tablename__ = "pictures"
     id: Mapped[int] = mapped_column(primary_key=True)
     large: Mapped[str]
     medium: Mapped[str]
     thumbnail: Mapped[str]
+
 
 class Users(Base):
     __tablename__ = "users"
@@ -95,12 +113,22 @@ class Users(Base):
     nat: Mapped[str]
 
     name_id: Mapped[int] = mapped_column(ForeignKey("names.id", ondelete="CASCADE"))
-    login_uuid: Mapped[UUID] = mapped_column(ForeignKey("logins.uuid", ondelete="CASCADE"))
+    login_uuid: Mapped[UUID] = mapped_column(
+        ForeignKey("logins.uuid", ondelete="CASCADE")
+    )
     dob_id: Mapped[int] = mapped_column(ForeignKey("dobs.id", ondelete="CASCADE"))
-    registered_id: Mapped[int] = mapped_column(ForeignKey("registered.id", ondelete="CASCADE"))
-    id_info_id: Mapped[int] = mapped_column(ForeignKey("id_info.id", ondelete="CASCADE"))
-    picture_id: Mapped[int] = mapped_column(ForeignKey("pictures.id", ondelete="CASCADE"))
-    location_id: Mapped[int] = mapped_column(ForeignKey("locations.id", ondelete="CASCADE"))
+    registered_id: Mapped[int] = mapped_column(
+        ForeignKey("registered.id", ondelete="CASCADE")
+    )
+    id_info_id: Mapped[int] = mapped_column(
+        ForeignKey("id_info.id", ondelete="CASCADE")
+    )
+    picture_id: Mapped[int] = mapped_column(
+        ForeignKey("pictures.id", ondelete="CASCADE")
+    )
+    location_id: Mapped[int] = mapped_column(
+        ForeignKey("locations.id", ondelete="CASCADE")
+    )
 
     name: Mapped["Name"] = relationship()
     login: Mapped["Login"] = relationship()
